@@ -1,0 +1,42 @@
+﻿@model List<src.ViewModel.UserViewModel>  // Usa il tuo modello dati effettivo
+
+<h2>Elenco Utenti</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>CodUser</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Type</th>
+            <!-- Aggiungi altre colonne secondo le tue esigenze -->
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.CodUser</td>
+                    <td>@user.Username</td>
+                    <td>@user.Name</td>
+                    <td>@user.Surname</td>
+                    <td>@user.Type</td>
+                    <td>
+                        <a asp-action="Details" asp-route-codUser="@user.CodUser">Dettagli</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">Nessun utente disponibile</td>
+            </tr>
+        }
+    </tbody>
+
+</table>

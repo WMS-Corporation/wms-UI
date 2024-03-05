@@ -1,0 +1,71 @@
+﻿@model LoginModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <!-- Aggiungi i tuoi stili personalizzati qui -->
+    <style>
+        body {
+            background-image: url('@Url.Content("~/images/wsm.jpg")');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .login-container {
+            text-align: center;
+            margin-top: 100px; /* Regola questa altezza in base alle tue esigenze */
+        }
+
+        .login-form {
+            max-width: 300px;
+            margin: 50px auto;
+            background-color: rgba(2, 2, 2, 0.5); /* Grigio trasparente */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .login-heading {
+            font-size: 34px;
+            font-weight: bold;
+            background-color: orange; /* Grigio trasparente */
+            margin-bottom: 20px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+        }
+
+        .login-button {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="login-heading">WAREHOUSE MASTER SYSTEM</h1>
+        <div class="login-form">
+            <form asp-action="Login" asp-controller="User" method="post">
+                <div class="login-input">
+                    <label for="Username">USERNAME</label>
+                    <input type="text" id="Username" name="Username" required>
+                    <label for="Password">PASSWORD</label>
+                    <input type="password" id="Password" name="Password" required>
+                </div>
+
+                <button type="submit" class="login-button">LOGIN</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -10,46 +10,32 @@ permissions:
   pull-requests: write
 
 jobs:
-  testJest:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        node-version: [ 16, 18, 20 ]
+  build:
+    name: Build API
+    runs-on: ubuntu-latest
+    env:
+      working-directory: './src'
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Tests
-        run: npm test
-
-      - name: Run EsLint quality check
-        run: npm run eslint
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+    - name: Restore dependencies
+      run: dotnet restore src.sln
+      working-directory: ${{env.working-directory}}
+    - run: dotnet build --no-restore
+      working-directory: ${{env.working-directory}}    
+    - run: dotnet test --no-build --verbosity normal
+      working-directory: ${{env.working-directory}}
 
   sonarCloudCheck:
     name: SonarCloud
     runs-on: ubuntu-latest
-    needs: testJest
+    needs: build
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Test and coverage
-        run: npm run coverage
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
@@ -58,7 +44,7 @@ jobs:
 
   release-please:
     runs-on: ubuntu-latest
-    needs: testJest
+    needs: build
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: google-github-actions/release-please-action@v4

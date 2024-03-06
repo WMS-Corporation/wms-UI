@@ -90,12 +90,10 @@ app.Use(async (context, next) =>
     {
         var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "Username") }, "custom");
 
-        // Associa il token all'identità
         identity.AddClaim(new Claim(src.Constants.AuthToken, authToken));
 
         var principal = new ClaimsPrincipal(identity);
 
-        // Imposta l'utente come autenticato
         context.User = principal;
 
         var authenticationProperties = new AuthenticationProperties
@@ -109,14 +107,12 @@ app.Use(async (context, next) =>
     {
         if (context.Request.Path.StartsWithSegments("/User/Login"))
         {
-            // Se è per la pagina di login, passa alla catena di middleware successiva
             await next();
             return;
         }
         else
         {
             await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            // Non autenticato, reindirizza alla rotta di login
             context.Response.Redirect("/User/Login");
             return;
         }

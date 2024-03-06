@@ -1,6 +1,7 @@
-﻿namespace src.Constants
+﻿namespace src
 {
-    public class Constants
+    public static class Constants
     {
+        public const string AuthToken = "AuthToken";
     }
 }

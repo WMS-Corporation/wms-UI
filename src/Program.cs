@@ -13,15 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Configura il servizio di sessione
 builder.Services.AddSession(options =>
 {
-    options.Cookie.Name = ".YourApp.Session";
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Imposta il timeout della sessione
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
 });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
-var webServiceBaseUrl = @"http://localhost:3000"; // Sostituisci con il tuo effettivo URL del servizio
+var webServiceBaseUrl = @"http://localhost:3000"; 
 
 // Configura il servizio con l'URL del servizio
 builder.Services.AddScoped<UserService>(serviceProvider =>
@@ -35,9 +34,8 @@ builder.Services.AddScoped<UserService>(serviceProvider =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        //options.Cookie.Name = "AuthToken";
-        options.LoginPath = "/User/Login"; // Imposta il percorso di accesso per il reindirizzamento
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Imposta la durata del cookie
+        options.LoginPath = "/User/Login"; 
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
     });
 
 var mapperConfig = new MapperConfiguration(config =>
@@ -72,7 +70,6 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-// ... altri middleware ...
 app.UseHsts();
 
 app.UseHttpsRedirection();
@@ -80,60 +77,21 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Aggiungi il middleware di sessione
 app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-////gestione token per autenticazione asp.net
-//app.UseWhen(context => !context.Request.Path.StartsWithSegments("/User/Login"), appBuilder =>
-//{
-//    appBuilder.Use(async (context, next) =>
-//    {
-//        var authToken = context.Session.GetString("AuthToken");
-
-//        if (!string.IsNullOrEmpty(authToken))
-//        {
-//            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "Username") }, "custom");
-
-//            // Associa il token all'identità
-//            identity.AddClaim(new Claim("AuthToken", authToken));
-
-//            var principal = new ClaimsPrincipal(identity);
-
-//            // Imposta l'utente come autenticato
-//            context.User = principal;
-
-//            var authenticationProperties = new AuthenticationProperties
-//            {
-//                IsPersistent = false
-//            };
-
-//            await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authenticationProperties);
-//        }
-//        else
-//        {
-//            await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-//            // Non autenticato, reindirizza alla rotta di login
-//            context.Response.Redirect("/User/Login");
-//            return;
-//        }
-
-//        await next();
-//    });
-//});
-
 app.Use(async (context, next) =>
 {
-    var authToken = context.Session.GetString("AuthToken");
+    var authToken = context.Session.GetString(src.Constants.AuthToken);
 
     if (!string.IsNullOrEmpty(authToken))
     {
         var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "Username") }, "custom");
 
         // Associa il token all'identità
-        identity.AddClaim(new Claim("AuthToken", authToken));
+        identity.AddClaim(new Claim(src.Constants.AuthToken, authToken));
 
         var principal = new ClaimsPrincipal(identity);
 

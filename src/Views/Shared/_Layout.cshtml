@@ -25,12 +25,12 @@
 
         .sidebar {
             height: 100vh;
-            overflow-y: auto; /* Aggiunto per la gestione dello scroll in caso di contenuto più lungo della viewport */
+            overflow-y: auto; 
         }
 
         .main-content {
             height: 100vh;
-            overflow-y: auto; /* Aggiunto per la gestione dello scroll in caso di contenuto più lungo della viewport */
+            overflow-y: auto; 
         }
 
     </style>
@@ -39,7 +39,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: red;">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <!-- Icona del tuo prodotto -->
                 <img src="~/images/logo.png" alt="WMS" width="30" height="30" class="d-inline-block align-top">
                 WMS
             </a>
@@ -47,26 +46,22 @@
     </nav>
 
     <div class="container-fluid">
-        <!-- Barra laterale -->
         <div class="row">   
             @if (User.Identity.IsAuthenticated)
             {
                 <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
-                            <!-- Viste parziali per i link della barra laterale -->
                             @await Html.PartialAsync("_SidebarLinks")
                         </ul>
                     </div>
                 </nav>
-                <!-- Contenuto principale -->
                 <main role="main" class="ml-sm-auto col-lg-10 px-4">
                     @RenderBody()
                 </main>
             }
             else
             {
-                <!-- Contenuto principale -->
                 <main role="main">
                     @RenderBody()
                 </main>

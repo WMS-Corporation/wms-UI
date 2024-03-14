@@ -19,6 +19,7 @@ namespace src.Controllers
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mapper = mapper;
         }
+
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetUsersAsync();

@@ -13,14 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Configura il servizio di sessione
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
-var webServiceBaseUrl = @"http://localhost:3000"; 
+var webServiceBaseUrl = @"http://localhost:3000";
 
 // Configura il servizio con l'URL del servizio
 builder.Services.AddScoped<UserService>(serviceProvider =>
@@ -30,17 +30,24 @@ builder.Services.AddScoped<UserService>(serviceProvider =>
         webServiceBaseUrl
     )
 );
+builder.Services.AddScoped<TaskService>(serviceProvider =>
+    new TaskService(
+        serviceProvider.GetRequiredService<HttpClient>(),
+        serviceProvider.GetRequiredService<IHttpContextAccessor>(),
+        webServiceBaseUrl
+    )
+);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/User/Login"; 
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
+        options.LoginPath = "/User/Login";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
 
 var mapperConfig = new MapperConfiguration(config =>
 {
-    config.AddProfile<src.Mappings.UserMappingProfile>();
+    config.AddProfile<src.Mappings.MapperProfile>();
 });
 
 var mapper = mapperConfig.CreateMapper();

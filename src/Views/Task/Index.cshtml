@@ -1,0 +1,42 @@
+﻿@model List<src.ViewModel.TaskViewModel>
+
+<h2>Elenco Task</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Codice Operatore</th>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Stato</th>
+                <th>Codice Task</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model)
+            {
+                <tr>
+                    <td>@task.CodOperator</td>
+                    <td>@task.Date.ToShortDateString()</td>
+                    <td>@task.Type</td>
+                    <td>@task.Status</td>
+                    <td>@task.CodTask</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-taskId="@task.CodTask"><i class="fas fa-pencil-alt"></i></a>
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-taskId="@task.CodTask"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nessun task disponibile.</p>
+}

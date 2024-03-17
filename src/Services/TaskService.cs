@@ -46,7 +46,7 @@ namespace src.Services
 
         public async Task UpdateTaskAsync(TaskModel updatedTask)
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"{_webServiceBaseUrl}/api/tasks/{updatedTask.Id}");
+            var request = new HttpRequestMessage(HttpMethod.Put, $"{_webServiceBaseUrl}/api/tasks/{updatedTask.CodTask}");
             AddAccessTokenToRequest(request);
 
             request.Content = new StringContent(JsonConvert.SerializeObject(updatedTask), Encoding.UTF8, "application/json");

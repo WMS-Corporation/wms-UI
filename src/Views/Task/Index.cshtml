@@ -7,11 +7,12 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Codice Task</th>
                 <th>Codice Operatore</th>
+                <th>Numero prodotti</th>
                 <th>Data</th>
                 <th>Tipo</th>
                 <th>Stato</th>
-                <th>Codice Task</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -20,11 +21,12 @@
             @foreach (var task in Model)
             {
                 <tr>
+                    <td>@task.CodTask</td>
                     <td>@task.CodOperator</td>
+                    <td>@task.ProductList.Count()</td>
                     <td>@task.Date.ToShortDateString()</td>
                     <td>@task.Type</td>
                     <td>@task.Status</td>
-                    <td>@task.CodTask</td>
                     <td>
                         <a asp-action="Edit" asp-route-taskId="@task.CodTask"><i class="fas fa-pencil-alt"></i></a>
                     </td>

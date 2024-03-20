@@ -22,21 +22,15 @@ namespace src.Services
             _webServiceBaseUrl = webServiceBaseUrl ?? throw new ArgumentNullException(nameof(webServiceBaseUrl));
         }
 
-        private string GetAccessToken()
-        {
-            return _httpContextAccessor.HttpContext.Session.GetString(Constants.AuthToken);
-        }
-
-        private void AddAccessTokenToRequest(HttpRequestMessage request)
-        {
-            var token = GetAccessToken();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-
         public async Task AddTaskAsync(TaskModel task)
         {
+            await PostCall(task);
+        }
+
+        private async Task PostCall(TaskModel task)
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, $"{_webServiceBaseUrl}/api/tasks");
-            AddAccessTokenToRequest(request);
+            Utils.HttpUtils.AddAccessTokenToRequest(_httpContextAccessor, request);
 
             request.Content = new StringContent(JsonConvert.SerializeObject(task), Encoding.UTF8, "application/json");
 
@@ -47,7 +41,7 @@ namespace src.Services
         public async Task UpdateTaskAsync(TaskModel updatedTask)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, $"{_webServiceBaseUrl}/api/tasks/{updatedTask.CodTask}");
-            AddAccessTokenToRequest(request);
+            Utils.HttpUtils.AddAccessTokenToRequest(_httpContextAccessor, request);
 
             request.Content = new StringContent(JsonConvert.SerializeObject(updatedTask), Encoding.UTF8, "application/json");
 
@@ -58,7 +52,7 @@ namespace src.Services
         public async Task DeleteTaskAsync(string taskId)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, $"{_webServiceBaseUrl}/api/tasks/{taskId}");
-            AddAccessTokenToRequest(request);
+            Utils.HttpUtils.AddAccessTokenToRequest(_httpContextAccessor, request);
 
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -67,7 +61,7 @@ namespace src.Services
         public async Task<TaskModel> GetTaskAsync(string taskId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{_webServiceBaseUrl}/api/tasks/{taskId}");
-            AddAccessTokenToRequest(request);
+            Utils.HttpUtils.AddAccessTokenToRequest(_httpContextAccessor, request);
 
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -79,7 +73,7 @@ namespace src.Services
         public async Task<List<TaskModel>> GetTasksAsync()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{_webServiceBaseUrl}/api/tasks/all");
-            AddAccessTokenToRequest(request);
+            Utils.HttpUtils.AddAccessTokenToRequest(_httpContextAccessor, request);
 
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();

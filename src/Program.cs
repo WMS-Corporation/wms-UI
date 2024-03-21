@@ -112,7 +112,8 @@ app.Use(async (context, next) =>
     }
     else
     {
-        if (context.Request.Path.StartsWithSegments("/User/Login"))
+        var contextRequestPath = context.Request.Path;
+        if (contextRequestPath.StartsWithSegments("/User/Login") || contextRequestPath.StartsWithSegments("/User/Register"))
         {
             await next();
             return;

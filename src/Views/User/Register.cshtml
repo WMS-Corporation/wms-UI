@@ -1,0 +1,93 @@
+﻿@model RegisterModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrazione</title>
+    <style>
+        body {
+            background-image: url('@Url.Content("~/images/wsm.jpg")');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .register-container {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .register-form {
+            max-width: 300px;
+            margin: 50px auto;
+            background-color: rgba(2, 2, 2, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .register-heading {
+            font-size: 34px;
+            font-weight: bold;
+            background-color: orange;
+            margin-bottom: 20px;
+        }
+
+        .register-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .register-label {
+            text-align: left;
+        }
+
+        .register-input input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+        }
+
+        .register-button {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h1 class="register-heading">Registrazione</h1>
+        <div class="register-form">
+            <form asp-action="Register" asp-controller="User" method="post">
+                <div class="register-input">
+                    <label for="Username" class="register-label">Username</label>
+                    <input type="text" id="Username" name="Username" required>
+                </div>
+                <div class="register-input">
+                    <label for="Password" class="register-label">Password</label>
+                    <input type="password" id="Password" name="Password" required>
+                </div>
+                <div class="register-input">
+                    <label for="Name" class="register-label">Nome</label>
+                    <input type="text" id="Name" name="Name" required>
+                </div>
+                <div class="register-input">
+                    <label for="Surname" class="register-label">Cognome</label>
+                    <input type="text" id="Surname" name="Surname" required>
+                </div>
+                <div class="register-input">
+                    <label for="Type" class="register-label">Tipo</label>
+                    <input type="text" id="Type" name="Type" required>
+                </div>
+                <button type="submit" class="register-button">Registra</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using src.Models;
-using src.Models.Product;
+using src.Services;
 using src.ViewModel;
 
 namespace src.Mappings
@@ -11,7 +11,12 @@ namespace src.Mappings
         {
             CreateMap<UserModel, UserViewModel>();
             CreateMap<ProductModel, ProductViewModel>();
-            CreateMap<TaskModel, TaskViewModel>().ForMember(dest => dest.ProductList, opt => opt.MapFrom(src => src.ProductList)); ;
+            CreateMap<OrderModel, OrderViewModel>().ForMember(dest => dest.ProductList, opt => opt.Ignore());
+            CreateMap<TaskModel, TaskViewModel>().ForMember(dest => dest.ProductList, opt => opt.Ignore());
+
+
+            CreateMap<ProductViewModel, ProductModel>();
+
         }
     }
 }

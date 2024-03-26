@@ -1,0 +1,51 @@
+﻿@model List<src.ViewModel.ProductViewModel>
+
+<h2>Elenco Prodotti</h2>
+
+<a asp-action="Add" class="btn btn-primary mb-3">Aggiungi Prodotto</a>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Codice Prodotto</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Data di Scadenza</th>
+                <th>Tipo</th>
+                <th>Dettagli</th>
+                <th>Modifica</th>
+                <th>Elimina</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.CodProduct</td>
+                    <td>@product.Name</td>
+                    <td>@product.Category</td>
+                    <td>@product.ExpirationDate.ToShortDateString()</td>
+                    <td>@product.Type</td>
+                    <td>
+                        <a asp-action="Details" asp-route-codProduct="@product.CodProduct">Dettagli</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-codProduct="@product.CodProduct">Modifica</a>
+                    </td>
+                    <td>
+                        <form asp-action="Delete" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare questo prodotto?');">
+                            <input type="hidden" name="codProduct" value="@product.CodProduct" />
+                            <button type="submit" class="btn btn-danger">Elimina</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nessun prodotto disponibile.</p>
+}

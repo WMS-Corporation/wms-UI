@@ -17,14 +17,14 @@ namespace src.Controllers
     public class TaskController : Controller
     {
         private readonly TaskService _taskService;
+        private readonly ProductService _productService;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TaskController(TaskService taskService, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public TaskController(TaskService taskService, ProductService productService, IMapper mapper)
         {
             _taskService = taskService ?? throw new ArgumentNullException(nameof(taskService));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace src.Controllers
         {
             var tasks = await _taskService.GetTasksAsync();
 
-            return View(tasks.Select(x => _mapper.Map<TaskViewModel>(x)).ToList());
+            return View(tasks.Select(x => _taskService.MapTaskModelToViewModel(_productService, x)).ToList());
         }
 
         [HttpGet]

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace src.Models.Product
+namespace src.Models
 {
     public class ProductModel
     {
@@ -15,9 +15,6 @@ namespace src.Models.Product
 
         [JsonProperty("_expirationDate")]
         public DateTime ExpirationDate { get; set; }
-
-        [JsonProperty("_stock")]
-        public int Stock { get; set; }
 
         [JsonProperty("_type")]
         public string Type { get; set; }

@@ -1,0 +1,24 @@
+﻿@model src.ViewModel.ProductViewModel
+
+<h2>Dettagli Prodotto</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Codice Prodotto:</dt>
+        <dd class="col-sm-9">@Model.CodProduct</dd>
+
+        <dt class="col-sm-3">Nome:</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">Categoria:</dt>
+        <dd class="col-sm-9">@Model.Category</dd>
+
+        <dt class="col-sm-3">Data di Scadenza:</dt>
+        <dd class="col-sm-9">@Model.ExpirationDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Tipo:</dt>
+        <dd class="col-sm-9">@Model.Type</dd>
+    </dl>
+</div>
+
+<a asp-action="Index" class="btn btn-primary">Torna alla lista</a>

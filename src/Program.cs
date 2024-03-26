@@ -20,6 +20,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
+#region Mapper
+var mapperConfig = new MapperConfiguration(config =>
+{
+    config.AddProfile<src.Mappings.MapperProfile>();
+});
+
+var mapper = mapperConfig.CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+#endregion
+
 var webServiceBaseUrl = @"http://localhost:3000";
 
 // Configura il servizio con l'URL del servizio
@@ -29,12 +40,28 @@ builder.Services.AddScoped<UserService>(serviceProvider =>
         serviceProvider.GetRequiredService<IHttpContextAccessor>(),
         webServiceBaseUrl
     )
+); 
+builder.Services.AddScoped<ProductService>(serviceProvider =>
+    new ProductService(
+        serviceProvider.GetRequiredService<HttpClient>(),
+        serviceProvider.GetRequiredService<IHttpContextAccessor>(),
+        webServiceBaseUrl
+    )
 );
 builder.Services.AddScoped<TaskService>(serviceProvider =>
     new TaskService(
         serviceProvider.GetRequiredService<HttpClient>(),
         serviceProvider.GetRequiredService<IHttpContextAccessor>(),
-        webServiceBaseUrl
+        webServiceBaseUrl,
+        serviceProvider.GetRequiredService<IMapper>()
+    )
+);
+builder.Services.AddScoped<OrderService>(serviceProvider =>
+    new OrderService(
+        serviceProvider.GetRequiredService<HttpClient>(),
+        serviceProvider.GetRequiredService<IHttpContextAccessor>(),
+        webServiceBaseUrl,
+        serviceProvider.GetRequiredService<IMapper>()
     )
 );
 
@@ -45,14 +72,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
 
-var mapperConfig = new MapperConfiguration(config =>
-{
-    config.AddProfile<src.Mappings.MapperProfile>();
-});
-
-var mapper = mapperConfig.CreateMapper();
-
-builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

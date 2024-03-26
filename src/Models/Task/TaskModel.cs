@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using src.Models.Product;
 
 namespace src.Models
 {
@@ -20,8 +19,8 @@ namespace src.Models
         [JsonProperty("_status")]
         public string Status { get; set; }
 
-        [JsonProperty("_productList")]
-        public List<ProductModel> ProductList { get; set; }
+        [JsonProperty("_productCodeList")]
+        public List<string> ProductCodeList { get; set; }
 
         [JsonProperty("_codTask")]
         public string CodTask { get; set; }
